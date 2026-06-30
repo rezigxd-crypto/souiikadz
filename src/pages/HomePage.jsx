@@ -124,7 +124,7 @@ function CTASection() {
         <div className="flex gap-3.5 justify-center flex-wrap">
           {user ? (
             <Link to="/dashboard" className="btn btn-lg bg-white text-brand-600 hover:no-underline hover:bg-brand-50">
-              {user.role === 'farmer' ? 'بيع منتجاتك الآن' : user.role === 'admin' ? 'لوحة الإدارة' : t('home.ctaStart')}
+              {user?.role === 'farmer' ? 'بيع منتجاتك الآن' : user?.role === 'admin' ? 'لوحة الإدارة' : t('home.ctaStart')}
             </Link>
           ) : (
             <Link to="/auth" className="btn btn-lg bg-white text-brand-600 hover:no-underline hover:bg-brand-50">
