@@ -25,34 +25,39 @@ export default function MarketPage() {
   const [products, setProducts] = useState([])
   const [headerRef, headerInView] = useInView(0.05)
 
-  // Fetch products from Supabase on mount + when filters change
+  // Fetch products from localStorage + apply filters
   useEffect(() => {
-    let cancelled = false
-    ;(async () => {
-      setLoading(true)
-      try {
-        const data = await getProducts({
-          category: cat,
-          sort,
-          maxPrice,
-          wilayaCode: wilayaFilter ? parseInt(wilayaFilter) : null,
-          deliveryOnly,
+    setLoading(true)
+    try {
+      let data = getProducts()
+      if (cat !== 'الكل') {
+        data = data.filter((p) => {
+          const variants = p.t ? Object.values(p.t).map((v) => v.category) : []
+          return variants.includes(cat)
         })
-        if (!cancelled) setProducts(data || [])
-      } catch (err) {
-        console.error('Failed to load products:', err)
-      } finally {
-        if (!cancelled) setLoading(false)
       }
-    })()
-    return () => { cancelled = true }
+      if (wilayaFilter) data = data.filter((p) => p.wilayaCode === parseInt(wilayaFilter))
+      if (deliveryOnly) data = data.filter((p) => p.deliveryAvailable)
+      if (maxPrice) data = data.filter((p) => p.discount <= maxPrice)
+      switch (sort) {
+        case 'price_asc':  data = [...data].sort((a, b) => a.discount - b.discount); break
+        case 'price_desc': data = [...data].sort((a, b) => b.discount - a.discount); break
+        case 'rating':     data = [...data].sort((a, b) => b.rating - a.rating); break
+        case 'expiry':     data = [...data].sort((a, b) => a.expiry - b.expiry); break
+      }
+      setProducts(data || [])
+    } catch (err) {
+      console.error('Failed to load products:', err)
+    } finally {
+      setLoading(false)
+    }
   }, [cat, sort, maxPrice, wilayaFilter, deliveryOnly])
 
   // Client-side freshness + search filter (these can't easily be done in SQL)
   const filtered = useMemo(() => products
     .filter((p) => {
       if (freshness === 'any') return true
-      const postedAt = p.posted_at ? new Date(p.posted_at).getTime() : Date.now()
+      const postedAt = p.postedAt ? new Date(p.postedAt).getTime() : Date.now()
       const hoursElapsed = (Date.now() - postedAt) / 3_600_000
       if (freshness === 'fresh') return hoursElapsed < 24
       if (freshness === 'recent') return hoursElapsed < 72

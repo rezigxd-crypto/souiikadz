@@ -38,25 +38,20 @@ export default function ProductDetailPage() {
   const timer = useCountdown(product?.expiry ?? 48)
 
   useEffect(() => {
-    let cancelled = false
-    ;(async () => {
-      setLoading(true)
-      try {
-        const p = await getProduct(parseInt(id))
-        if (cancelled) return
-        setProduct(p)
-        // Fetch related products (same category)
-        const all = await getProducts()
-        if (cancelled) return
+    setLoading(true)
+    try {
+      const p = getProduct(parseInt(id))
+      setProduct(p)
+      if (p) {
+        const all = getProducts()
         const cat = pt(p, lang, 'category')
         setRelated(all.filter((x) => pt(x, lang, 'category') === cat && x.id !== p.id).slice(0, 3))
-      } catch (err) {
-        if (!cancelled) setProduct(null)
-      } finally {
-        if (!cancelled) setLoading(false)
       }
-    })()
-    return () => { cancelled = true }
+    } catch (err) {
+      setProduct(null)
+    } finally {
+      setLoading(false)
+    }
   }, [id, lang])
 
   if (loading) {

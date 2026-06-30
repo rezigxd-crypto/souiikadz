@@ -152,9 +152,10 @@ export default function HomePage() {
     return () => clearTimeout(id)
   }, [])
 
-  // Fetch latest products from Supabase
+  // Fetch latest products from localStorage
   useEffect(() => {
-    getProducts({ sort: 'default' }).then(setProducts).catch(() => {})
+    const data = getProducts()
+    setProducts(data.slice(0, 4))
   }, [])
 
   const benefits = [
