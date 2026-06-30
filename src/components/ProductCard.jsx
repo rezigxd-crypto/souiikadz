@@ -47,8 +47,8 @@ function ProductCardInner({ product, onWishToggle, isWished }) {
   const unit        = pt(product, lang, 'unit')
   const badge       = pt(product, lang, 'badge')
 
-  const deliveryAvailable = product.delivery_available ?? product.deliveryAvailable
-  const wilayaCode = product.wilaya_code ?? product.wilayaCode
+  const deliveryAvailable = product.deliveryAvailable ?? false
+  const wilayaCode = product.wilayaCode ?? null
 
   const handleBuy = (e) => {
     e.preventDefault()
