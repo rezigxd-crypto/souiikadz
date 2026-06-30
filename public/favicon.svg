@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <!-- Background gradient -->
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1a6b3a"/>
+      <stop offset="100%" stop-color="#2d9b5a"/>
+    </linearGradient>
+    <linearGradient id="leaf" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#dcf0dc"/>
+    </linearGradient>
+    <linearGradient id="trunk" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#c9a227"/>
+      <stop offset="100%" stop-color="#8a6f1a"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Rounded square background -->
+  <rect x="2" y="2" width="60" height="60" rx="16" fill="url(#bg)"/>
+
+  <!-- Tree trunk -->
+  <rect x="29" y="38" width="6" height="18" rx="2" fill="url(#trunk)"/>
+
+  <!-- Tree foliage — three overlapping circles for organic, leafy look -->
+  <circle cx="32" cy="22" r="13" fill="url(#leaf)"/>
+  <circle cx="22" cy="30" r="9" fill="url(#leaf)" opacity="0.85"/>
+  <circle cx="42" cy="30" r="9" fill="url(#leaf)" opacity="0.85"/>
+
+  <!-- Vein highlights -->
+  <path d="M32 14 L32 32 M32 22 L24 26 M32 22 L40 26 M32 28 L26 32 M32 28 L38 32"
+        stroke="#1a6b3a" stroke-width="1.4" stroke-linecap="round" opacity="0.45"/>
+</svg>
